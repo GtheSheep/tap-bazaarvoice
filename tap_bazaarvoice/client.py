@@ -47,6 +47,8 @@ class BazaarvoiceStream(RESTStream):
             next_page_token = first_match
         else:
             response_json = response.json()
+            if response_json["Offset"] is None:
+                return None
             if response_json["TotalResults"] > response_json["Offset"] + self.config["page_size"]:
                 next_page_token = {
                     "Offset": response_json["Offset"] + self.config["page_size"],
